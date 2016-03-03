@@ -1,0 +1,46 @@
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"/>
+	<Import Condition="'$(VSToolsPath)' != ''" Project="$(VSToolsPath)\Web\Microsoft.Web.Publishing.targets"/>
+	<Import Condition="'$(VSToolsPath)' != ''" Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets"/>
+	<Import Condition="false" Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets"/>
+	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
+	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.targets" Condition="false" />
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="App.config"/>
+		<Content Include="App.Release.config">
+			<DependentUpon>App.config</DependentUpon>
+		</Content>
+		<Content Include="App.Debug.config">
+			<DependentUpon>App.config</DependentUpon>
+		</Content>
+	</ItemGroup>
+	<UsingTask AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v14.0\Web\Microsoft.Web.Publishing.Tasks.dll" TaskName="TransformXml"/>
+	<Target Condition="exists('app.$(Configuration).config')" Name="AfterCompile">
+		<TransformXml Destination="$(IntermediateOutputPath)$(TargetFileName).config" Source="app.config" Transform="app.$(Configuration).config"/>
+		<ItemGroup>
+			<AppConfigWithTargetPath Remove="app.config"/>
+			<AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+				<TargetPath>$(TargetFileName).config</TargetPath>
+			</AppConfigWithTargetPath>
+			<AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+				<TargetPath>$(TargetName).vshost$(TargetExt).config</TargetPath>
+			</AppConfigWithTargetPath>
+		</ItemGroup>
+	</Target>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="Program.cs"/>
+	</ItemGroup>
+</Project>
