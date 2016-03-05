@@ -1,4 +1,4 @@
-#r "Microsoft.Web.Xdt.2.1.1/lib/net40/Microsoft.Web.XmlTransform.dll"
+#r "../packages/Microsoft.Web.Xdt/lib/net40/Microsoft.Web.XmlTransform.dll"
 
 open Microsoft.Web.XmlTransform
 

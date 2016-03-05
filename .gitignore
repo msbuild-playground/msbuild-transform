@@ -3,3 +3,4 @@ obj
 *.exe
 *.nupkg
 FAKE
+packages
